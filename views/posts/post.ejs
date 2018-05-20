@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>BLOG |
+    <%= post.header %>
+  </title>
+</head>
+
+<body>
+  <%- include ../partials/nav.ejs %>
+
+    <div class="container text-center post-cont">
+      <h2><%= post.header %></h2>
+      <p>Author:
+        <a href="/users/<%= post.user.username %>/posts">
+          <%= post.user.username %>
+        </a>
+      </p>
+      <p>
+        <span class="green"><%= post.likes.length %></span> Likes
+      </p>
+      <% if(loggedIn) {%>
+        <form action="/posts/<%= post.id %>/like" method="POST">
+          <button type="submit" class="btn btn-success">Like</button>
+        </form>
+        <% } %>
+          <p class="col-lg-8 mx-auto">
+            <%= post.post %>
+          </p>
+          <% if(usersPost) { %>
+            <a href="<%= post.id %>/edit"><button class="btn btn-primary">Edit</button></a>
+            <% } %>
+    </div>
+</body>
+
+</html>

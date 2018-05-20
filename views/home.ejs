@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>BLOG</title>
+</head>
+
+<body>
+  <%- include partials/nav.ejs %>
+
+    <div class="container-fluid">
+      <% posts.forEach((post) => {%>
+        <div class="container content">
+          <a class="content-links" href="/posts/<%= post.id %>">
+            <h3><%= post.header %></h3>
+            <p>
+              <%= post.post.substr(0, 120) %>
+            </p>
+          </a>
+          <span>by</span>
+          <a href="/users/<%= post.user.username %>/posts">
+            <%= post.user.username %>
+          </a>
+          <p class="float-right"><span class="green"><%= post.likes.length %></span> Likes</p>
+        </div>
+        <% }); %>
+    </div>
+</body>
+
+</html>

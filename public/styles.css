@@ -1,0 +1,85 @@
+nav {
+  background-color: #e3f2fd;
+  box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.1);
+}
+nav a {
+  margin: 0px 30px;
+  color: black;
+}
+nav a:hover {
+  color: black;
+}
+.content-links {
+  color: black;
+}
+.content {
+  padding: 30px 00px 10px 20px;
+  border-bottom: 1px solid #E0E0E0;
+}
+.content-links:hover {
+  color: black;
+  text-decoration: underline;
+}
+.content:hover {
+  border-left: 4px solid grey;
+}
+.post-cont {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+#log-in-text {
+  padding-top: 30px;
+}
+#sep-line {
+ margin-top: 40px;
+ width:70%;
+ border-bottom: 1px solid grey;
+}
+#sign-up-button {
+  margin-bottom: 30px;
+}
+.profile {
+  margin-top: 40px;
+  padding-bottom: 40px;
+}
+.bio {
+  width: 500px;
+}
+.post-content {
+  margin-top: 50px;
+}
+#settings {
+  margin: 40px 0px;
+}
+.change {
+  margin-top: 40px;
+}
+.delete {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.new-post {
+  margin-top: 30px;
+}
+.post-textarea {
+  margin: 20px 0px;
+  height: 400px;
+}
+.publish-btn {
+  margin-bottom: 30px;
+}
+.delete-btn {
+  margin-bottom: 30px;
+}
+.btn-success {
+  margin-bottom: 20px;
+}
+.green {
+  color: green;
+}
+#error {
+  margin-top: 70px;
+}
+#eMessage {
+  margin-top: 40px;
+}

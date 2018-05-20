@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>BLOG |
+    <%= user.username %> New Post</title>
+</head>
+
+<body>
+  <%- include ../partials/nav.ejs %>
+
+    <div class="container text-center new-post">
+      <h1>New Post</h1>
+      <form class="mx-auto col-lg-8" action="/users/<%= user.username %>" method="POST">
+        <div class="form-group">
+          <input type="text" name="header" class="form-control" placeholder="Header">
+        </div>
+        <div class="form-group">
+          <textarea class="form-control post-textarea" name="post"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary publish-btn">Publish</button>
+      </form>
+    </div>
+</body>
+
+</html>

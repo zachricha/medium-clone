@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>BLOG |
+    <%= user.username %> Settings</title>
+</head>
+
+<body>
+  <%- include ../partials/nav.ejs %>
+
+    <div class="container change">
+      <div class="row text-center">
+        <h1 id="settings" class="col-lg-12">Settings</h1>
+        <form class="mx-auto col-lg-6" action="/users/<%= user.username %>/update/bio?_method=PATCH" method="POST">
+          <div class="form-group">
+            <label>Edit Bio</label>
+            <textarea class="form-control" name="bio"><%= user.bio %></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Bio</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container change">
+      <div class="row text-center">
+        <form class="mx-auto col-lg-6" action="/users/<%= user.username %>/update/email?_method=PATCH" method="POST">
+          <div class="form-group">
+            <label>Change Email Address</label>
+            <input type="email" name="email" class="form-control" placeholder="New Email Address">
+          </div>
+          <button type="submit" class="btn btn-primary">Change Email</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container change">
+      <div class="row text-center">
+        <form class="mx-auto col-lg-6" action="/users/<%= user.username %>/update/password?_method=PATCH" method="POST">
+          <div class="form-group">
+            <label>Change Password</label>
+            <input type="password" name="oldPassword" class="form-control" placeholder="Old Password">
+          </div>
+          <div class="form-group">
+            <input type="password" name="password" class="form-control" placeholder="New Password">
+          </div>
+          <div class="form-group">
+            <input type="password" name="password2" class="form-control" placeholder="Re-type Password">
+          </div>
+          <button type="submit" class="btn btn-primary">Change Password</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container delete">
+      <div class="row text-center">
+        <form class="mx-auto col-lg-6" action="/users/<%= user.username %>/settings?_method=DELETE" method="POST">
+          <label class="col-lg-12">Delete User Permanently</label>
+          <button type="submit" class="btn btn-danger">Delete User</button>
+        </form>
+      </div>
+    </div>
+</body>
+
+</html>

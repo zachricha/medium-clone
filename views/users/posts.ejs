@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>BLOG |
+    <%= user.username %>
+  </title>
+</head>
+
+<body>
+  <%- include ../partials/nav.ejs %>
+
+    <div class="container profile">
+      <div class="row text-center">
+        <h1 class="col-lg-12"><%= user.username %></h1>
+        <p class="bio col-lg-4 mx-auto">
+          <%= user.bio %>
+        </p>
+      </div>
+    </div>
+
+    <% if(sameUser) { %>
+      <div class="container profile text-center">
+        <div class="float-left col-lg-4">
+          <a href="/users/<%= user.username %>/posts"><button class="btn btn-primary">Posts</button></a>
+          <a href="/users/<%= user.username %>/likes"><button class="btn btn-primary">Likes</button></a>
+          <a href="/users/<%= user.username %>/post"><button class="btn btn-primary">New Post</button></a>
+          <a href="/users/<%= user.username %>/settings"><button class="btn btn-primary">Settings</button></a>
+        </div>
+        <form class="col-lg-1 float-right" action="/logout" method="POST">
+          <button class="btn btn-primary" type="submit">Logout</button>
+        </form>
+      </div>
+      <% } %>
+
+        <div class="container-fluid mx-auto post-content">
+          <% user.posts.forEach((post) => { %>
+            <div class="container content">
+              <a class="content-links" href="/posts/<%= post.id %>">
+                <h3><%= post.header %></h3>
+                <p>
+                  <%= post.post %>
+                </p>
+              </a>
+              <span>by</span>
+              <a href="/users/<%= user.username %>/posts">
+                <%= user.username %>
+              </a>
+              <p class="float-right"><span class="green"><%= post.likes.length %></span> Likes</p>
+            </div>
+            <% }); %>
+        </div>
+</body>
+
+</html>
