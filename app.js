@@ -28,7 +28,6 @@ app.use(homeRoutes, postRoutes, userRoutes);
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
-  console.log('404 middleware');
   return next(err);
 });
 
@@ -44,3 +43,5 @@ app.use(auth.checkLogin, (err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+module.exports = app;

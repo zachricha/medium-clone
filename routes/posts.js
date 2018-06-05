@@ -11,12 +11,13 @@ Router
     Posts.findById(req.params.id).populate('user').exec().then((post) => {
       const loggedIn = req.session.user_id ? true : false;
 
+      let usersPost = null;
       if(req.session.user_id === post.user.id) {
-        var usersPost = true;
+        usersPost = true;
       } else {
-        var usersPost = false;
+        usersPost = false;
       };
-      res.render('posts/post', { post, usersPost, loggedIn, navLink: req.link, navUsername: req.username, });
+      return res.render('posts/post', { post, usersPost, loggedIn, navLink: req.link, navUsername: req.username, });
     }).catch(e => {
       return next(e);
     });
@@ -24,7 +25,7 @@ Router
   // edits post
   .patch(auth.loginRequired, auth.ensureCorrectUserPost, (req, res, next) => {
     Posts.findByIdAndUpdate(req.params.id, { header: req.body.header, post: req.body.post }).then((post) => {
-      res.redirect(`/posts/${post.id}`);
+      return res.redirect(`/posts/${post.id}`);
     }).catch(e => {
       return next(e);
     });
@@ -51,7 +52,7 @@ Router
 // edit post page
 Router.route('/posts/:id/edit').get(auth.loginRequired, auth.ensureCorrectUserPost, auth.checkLogin, (req, res, next) => {
   Posts.findById(req.params.id).then((post) => {
-    res.render('posts/edit', { post, navLink: req.link, navUsername: req.username, });
+    return res.render('posts/edit', { post, navLink: req.link, navUsername: req.username, });
   }).catch(e => {
     return next(e);
   });
@@ -79,7 +80,7 @@ Router.route('/posts/:id/like').post(auth.loginRequired, (req, res, next) => {
         };
 
         user.save().then(() => {
-          res.redirect(`/posts/${post.id}`);
+          return res.redirect(`/posts/${post.id}`);
         });
       }).catch(e => {
         return next(e);

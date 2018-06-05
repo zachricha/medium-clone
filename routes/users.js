@@ -9,9 +9,8 @@ Router.route('/users/:username')
 .post(auth.loginRequired, auth.ensureCorrectUser, (req, res, next) => {
     const newPost = new Posts(req.body);
     newPost.user = req.session.user_id;
-    return newPost
-    .save()
-    .then((post) => {
+
+    return newPost.save().then((post) => {
       return Users.findOneAndUpdate(
         { username: req.params.username },
       { $addToSet: { posts: post._id } });
@@ -25,10 +24,12 @@ Router.route('/users/:username')
 // displays user info and user posts
 Router.route('/users/:username/posts').get(auth.checkLogin, (req, res, next) => {
   Users.findOne({ username: req.params.username }).populate('posts').exec().then((user) => {
+    let sameUser = null;
+
     if(req.session.user_id === user.id) {
-      var sameUser = true;
+      sameUser = true;
     } else {
-      var sameUser = false;
+      sameUser = false;
     };
     return res.render('users/posts', { user, sameUser, navLink: req.link, navUsername: req.username, });
   }).catch(e => {
@@ -38,10 +39,12 @@ Router.route('/users/:username/posts').get(auth.checkLogin, (req, res, next) => 
 // displays user info and user likes
 Router.route('/users/:username/likes').get(auth.checkLogin, (req, res, next) => {
   Users.findOne({ username: req.params.username }).populate({ path: 'likes', populate: { path: 'user' }}).exec().then((user) => {
+    let sameUser = null;
+
     if(req.session.user_id === user.id) {
-      var sameUser = true;
+      sameUser = true;
     } else {
-      var sameUser = false;
+      sameUser = false;
     };
     return res.render('users/likes', { user, sameUser, navLink: req.link, navUsername: req.username, });
   }).catch(e => {
@@ -69,9 +72,23 @@ Router
   })
   // delete user
   .delete(auth.loginRequired, auth.ensureCorrectUser, (req, res, next) => {
-    Users.findOneAndRemove({ username: req.params.username }).then((user) => {
+    Users.findOneAndRemove({ username: req.params.username }).populate('likes').exec()
+    .then((user) => {
       req.session.user_id = null;
-      res.redirect(`/users/${user.username}/settings`);
+
+      Posts.deleteMany({ user: user.id }).then(() => {
+        user.likes.forEach((post) => {
+          const likeIndex = post.likes.indexOf(user.id);
+
+          if(likeIndex > -1 && post.user.toString() !== user.id) {
+            post.likes.splice(likeIndex, 1);
+            post.save();
+          };
+        });
+        return res.redirect(`/users/${user.username}/settings`);
+      }).catch(e => {
+        return next(e);
+      });
     }).catch(e => {
       return next(e);
     });
@@ -81,7 +98,8 @@ Router.route('/users/:username/update/email')
 .patch(auth.loginRequired, auth.ensureCorrectUser, (req, res, next) => {
   Users.findOneAndUpdate({ username: req.params.username },
   { email: req.body.email }).then((user) => {
-    res.redirect(`/users/${user.username}/settings`);
+
+    return res.redirect(`/users/${user.username}/settings`);
   }).catch(e => {
     return next(e);
   });
@@ -91,7 +109,8 @@ Router.route('/users/:username/update/bio')
 .patch(auth.loginRequired, auth.ensureCorrectUser, (req, res, next) => {
   Users.findOneAndUpdate({ username: req.params.username },
   { bio: req.body.bio }).then((user) => {
-    res.redirect(`/users/${user.username}/settings`);
+
+    return res.redirect(`/users/${user.username}/settings`);
   }).catch(e => {
     return next(e);
   });
@@ -102,14 +121,15 @@ Router.route('/users/:username/update/password')
 
   if(req.body.password === req.body.password2) {
     Users.findOne({ username: req.params.username }).then((user) => {
+
       user.comparePassword(req.body.oldPassword, (err, isMatch) => {
         if(isMatch) {
           user.password = req.body.password;
           user.save().then(() => {
-            res.redirect(`/users/${user.username}/settings`);
-          }).catch(e => {
-            return next(e);
+            return res.redirect(`/users/${user.username}/settings`);
           });
+        } else {
+          return res.redirect(`/users/${user.username}/settings`);
         };
       });
     }).catch(e => {

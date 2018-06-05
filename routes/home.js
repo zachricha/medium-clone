@@ -28,13 +28,13 @@ Router
       user.comparePassword(req.body.password, (err, isMatch) => {
         if(isMatch) {
           req.session.user_id = user.id;
-          res.redirect('/');
+          return res.redirect('/');
         } else {
-          res.redirect('/login');
+          return res.redirect('/login');
         };
       });
     }).catch(e => {
-      next(e);
+      return next(e);
     });
   });
 // signup form
@@ -46,7 +46,7 @@ Router.route('/signup').post((req, res, next) => {
         req.session.user_id = user.id;
         return res.redirect('/');
     }).catch(e => {
-      next(e);
+      return next(e);
     });
   });
 // logout

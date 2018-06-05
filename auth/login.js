@@ -7,7 +7,7 @@ function checkLogin(req, res, next) {
     return next();
   } else {
     Users.findById(req.session.user_id).then((user) => {
-      req.link = `/users/${user.username}`;
+      req.link = `/users/${user.username}/posts`;
       req.username = user.username;
       return next();
     }).catch(e => {
