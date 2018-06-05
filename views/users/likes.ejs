@@ -40,7 +40,7 @@
               <a class="content-links" href="/posts/<%= like.id %>">
                 <h3><%= like.header %></h3>
                 <p>
-                  <%= like.post %>
+                  <%= like.post.substr(0, 120) %>
                 </p>
               </a>
               <span>by</span>
