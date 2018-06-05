@@ -37,7 +37,10 @@ Router
       Users.findById(req.session.user_id).then((user) => {
 
         user.posts.splice(user.posts.indexOf(post.id),1);
-        user.likes.splice(user.likes.indexOf(post.id),1);
+        
+        if(user.likes.indexOf(post.id) !== -1) {
+          user.likes.splice(user.likes.indexOf(post.id),1);
+        };
 
         user.save().then(() => {
           return res.redirect('/');

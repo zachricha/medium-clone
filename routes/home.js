@@ -7,7 +7,7 @@ const Router = express.Router();
 // index page displays all blog posts
 Router.route('/').get(auth.checkLogin, (req, res, next) => {
   Posts.find().populate('user').exec().then((posts) => {
-    posts = posts.reverse();
+    
     return res.render('home', { posts, navLink: req.link, navUsername: req.username });
   }).catch(e => {
     return next(e);
